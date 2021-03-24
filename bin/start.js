@@ -1,29 +1,32 @@
 #!/usr/bin/env node
-const fs = require("fs-extra");
-const path = require("path");
-const https = require("https");
-const { exec } = require("child_process");
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
+const fs = require('fs-extra');
+const path = require('path');
+const https = require('https');
+const { exec } = require('child_process');
 
-const packageJson = require("../package.json");
+const packageJson = require('../package.json');
 // const babel = require("../.babelrc");
 
 const scripts = `"start": "webpack-dev-server --mode=development --open --hot",
 "build": "webpack --mode=production"`;
 
-const babel = `"babel": ${JSON.stringify(packageJson.babel)}`;
+// const babel = `"babel": ${JSON.stringify(packageJson.babel)}`;
 
 const getDeps = (deps) =>
   Object.entries(deps)
     .map((dep) => `${dep[0]}@${dep[1]}`)
     .toString()
-    .replace(/,/g, " ")
-    .replace(/^/g, "")
+    .replace(/,/g, ' ')
+    .replace(/^/g, '')
     // exclude the dependency only used in this file, nor relevant to the boilerplate
-    .replace(/fs-extra[^\s]+/g, "");
+    .replace(/fs-extra[^\s]+/g, '');
 
-console.log("Initializing project..");
+console.log('Initializing project..');
 
-// Windows ---> create folder 
+// Windows ---> create folder
 // Other Os ---> Create directory
 // Initialize npm
 exec(
@@ -42,50 +45,60 @@ exec(
         .toString()
         .replace(
           '"test": "echo \\"Error: no test specified\\" && exit 1"',
-          scripts
-        )
-        .replace('"keywords": []', babel);
+          scripts,
+        );
       fs.writeFile(packageJSON, data, (err2) => err2 || true);
     });
 
-    const filesToCopy = ["webpack.config.js"];
+    const filesToCopy = [
+      'webpack.config.js',
+      '.babelrc',
+      '.eslintrc.json',
+      '.prettierrc',
+    ];
 
     for (let i = 0; i < filesToCopy.length; i += 1) {
-      fs.createReadStream(path.join(__dirname, `../${filesToCopy[i]}`)).pipe(
-        fs.createWriteStream(`${process.argv[2]}/${filesToCopy[i]}`)
+      fs.createReadStream(
+        path.join(__dirname, `../${filesToCopy[i]}`),
+      ).pipe(
+        fs.createWriteStream(`${process.argv[2]}/${filesToCopy[i]}`),
       );
     }
 
-    // Needless to say, npm will remove the .gitignore file when the package is installed, 
+    // Needless to say, npm will remove the .gitignore file when the package is installed,
     // therefore it cannot be copied locally and needs to be downloaded.
     // So, linking remote directory to fetch details of .gitignore
     https.get(
-      "https://raw.githubusercontent.com/AmeerAsif777/create-app-react/main/.gitignore",
+      'https://raw.githubusercontent.com/AmeerAsif777/create-app-react/main/.gitignore',
       (res) => {
-        res.setEncoding("utf8");
-        let body = "";
-        res.on("data", (data) => {
+        res.setEncoding('utf8');
+        let body = '';
+        res.on('data', (data) => {
           body += data;
         });
-        res.on("end", () => {
+        res.on('end', () => {
           fs.writeFile(
             `${process.argv[2]}/.gitignore`,
             body,
-            { encoding: "utf-8" },
+            { encoding: 'utf-8' },
             (err) => {
               if (err) throw err;
-            }
+            },
           );
         });
-      }
+      },
     );
 
-    console.log("npm init -- done\n");
+    console.log('npm init -- done\n');
 
     // Installing dependencies
-    console.log("Installing dependencies -- it might take a few minutes..\n");
-    console.log("Meanwhile, you can chat with your GF.. xd");
-    console.log(`OMG !!! If you are like me a single, then I'm really sorry`);
+    console.log(
+      'Installing dependencies -- it might take a few minutes..\n',
+    );
+    console.log('Meanwhile, you can chat with your GF.. xd');
+    console.log(
+      "OMG !!! If you are a single like me, then I'm really sorry",
+    );
     const devDeps = getDeps(packageJson.devDependencies);
     const deps = getDeps(packageJson.dependencies);
     exec(
@@ -97,21 +110,22 @@ exec(
           return;
         }
         console.log(npmStdout);
-        console.log("Dependencies installed successfully\n");
+        console.log('Dependencies installed successfully\n');
 
-        console.log("Now Copying additional files..");
+        console.log('Now Copying additional files..');
         // Copying additional source files such as html, js, css
-        fs.copy(path.join(__dirname, "../src"), `${ process.argv[2] }/src`)
-          .then(() =>
-          {
+        fs.copy(
+          path.join(__dirname, '../src'),
+          `${process.argv[2]}/src`,
+        )
+          .then(() => {
             console.log(
-              `All done!\n\nYour project is now ready\n\nUse the below command to run the app.\n\ncd ${ process.argv[2] }\nnpm start`
+              `All done!\n\nYour project is now ready\n\nUse the below command to run the app.\n\ncd ${process.argv[2]}\nnpm start`,
             );
             console.log('Thank me later bruhh\n\nHappy Coding !!!!');
-          }
-          )
+          })
           .catch((err) => console.error(err));
-      }
+      },
     );
-  }
+  },
 );

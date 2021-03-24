@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin'); // The loader eslint-loader will be deprecated soon, so we are using Eslintplugin
 
 module.exports = {
   entry: ['babel-polyfill', './src/index.js'],
@@ -54,7 +55,10 @@ module.exports = {
       },
       {
         test: /\.(ico)$/,
-        use: { loader: 'file-loader', options: { name: '[name].[ext]' } },
+        use: {
+          loader: 'file-loader',
+          options: { name: '[name].[ext]' },
+        },
       },
     ],
   },
@@ -62,5 +66,6 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: './src/index.html',
     }),
+    new ESLintPlugin({}),
   ],
 };
