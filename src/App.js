@@ -1,4 +1,5 @@
 import React from 'react';
+import CodeGif from './images/coding.gif';
 
 const App = () => (
   <>
@@ -6,7 +7,7 @@ const App = () => (
     <p> Author- AMEER ASHIF</p>
     <p> I know you are gonna modify this page </p>
     <p> Happy Coding !!!</p>
+    <img src={CodeGif} alt="hi" />
   </>
 );
-
 export default App;

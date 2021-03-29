@@ -1,18 +1,9 @@
 const path = require('path');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const ESLintPlugin = require('eslint-webpack-plugin'); // The loader eslint-loader will be deprecated soon, so we are using Eslintplugin
 
 module.exports = {
   entry: ['babel-polyfill', './src/index.js'],
-  output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: 'bundle_[name][hash].js',
-  },
   resolve: {
     modules: [path.join(__dirname, 'src'), 'node_modules'],
-    alias: {
-      react: path.join(__dirname, 'node_modules', 'react'),
-    },
   },
   module: {
     rules: [
@@ -24,22 +15,12 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
-        ],
-      },
-      {
         test: /\.(eot|svg|otf|ttf|woff|woff2)$/,
         use: {
           loader: 'file-loader',
           options: {
             name: '[name]_[sha512:hash:base64:7].[ext]',
+            outputPath: 'imgs',
           },
         },
       },
@@ -50,6 +31,8 @@ module.exports = {
           options: {
             // inline files should be smaller than 10 kb
             limit: 10 * 1024,
+            name: '[name]_[sha512:hash:base64:7].[ext]',
+            outputPath: 'images',
           },
         },
       },
@@ -62,10 +45,4 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new HtmlWebPackPlugin({
-      template: './src/index.html',
-    }),
-    new ESLintPlugin({}),
-  ],
 };

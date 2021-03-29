@@ -10,8 +10,8 @@ const { exec } = require('child_process');
 const packageJson = require('../package.json');
 // const babel = require("../.babelrc");
 
-const scripts = `"start": "webpack-dev-server --mode=development --open --hot",
-"build": "webpack --mode=production"`;
+const scripts = `"start": "webpack-dev-server --config config/webpack.dev.js --open --hot",
+"build": "webpack --config config/webpack.prod.js"`;
 
 // const babel = `"babel": ${JSON.stringify(packageJson.babel)}`;
 
@@ -50,18 +50,20 @@ exec(
       fs.writeFile(packageJSON, data, (err2) => err2 || true);
     });
 
-    const filesToCopy = [
-      'webpack.config.js',
-      '.babelrc',
-      '.eslintrc.json',
-      '.prettierrc',
-    ];
+    const filesToCopy = ['.babelrc', '.eslintrc.json', '.prettierrc'];
 
     for (let i = 0; i < filesToCopy.length; i += 1) {
       fs.createReadStream(
         path.join(__dirname, `../${filesToCopy[i]}`),
       ).pipe(
         fs.createWriteStream(`${process.argv[2]}/${filesToCopy[i]}`),
+      );
+    }
+    const folderToCopy = ['config'];
+    for (let i = 0; i < folderToCopy.length; i += 1) {
+      fs.copy(
+        path.join(__dirname, `../${folderToCopy[i]}`),
+        `${process.argv[2]}/${folderToCopy[i]}`,
       );
     }
 
@@ -102,7 +104,7 @@ exec(
     const devDeps = getDeps(packageJson.devDependencies);
     const deps = getDeps(packageJson.dependencies);
     exec(
-      `cd ${process.argv[2]} && git init && node -v && npm -v && npm i -D ${devDeps} && npm i -S ${deps}`,
+      `cd ${process.argv[2]} && git init && node -v && npm -v && npm i -S ${deps} && npm i -D ${devDeps}`,
       (npmErr, npmStdout, npmStderr) => {
         if (npmErr) {
           console.error(`Some error while installing dependencies
