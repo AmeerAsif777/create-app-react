@@ -1,12 +1,12 @@
 # create-app-react
 
-> Say good bye to `create-react-app`, here comes alternative `create-app-react`. The goal of this package is to provide more user control to customize babel, webpack, eslint, prettier and other configurations.
+> Say good bye to `create-react-app`, here comes alternative `create-app-react`. The goal of this boilerplate is to provide more user control to customize babel, webpack, eslint, prettier and other configurations.
 
 ---
 
 ## Definition
 
-Basic react App setup with babel, react-router, webpack with basic loaders such as babel-loader, css-loader, file-loader, style-loader, url-loader.
+Basic react App setup with `babel`, `react-router`, `eslint`, `prettier`, and separate dependencies `webpack` files with basic loaders such as babel-loader, css-loader, file-loader, style-loader, url-loader and plugins.
 
 ---
 
@@ -20,7 +20,7 @@ Basic react App setup with babel, react-router, webpack with basic loaders such 
 
 Babel enables one writing code with JavaScript features that aren't supported by most browser yet.
 
-### _Babel plugins and presents are used in our project_
+### Babel plugins and presets are used in this boilerplate
 
 `@babel/preset-react` is preset for react<br />
 `@babel/preset-env` is a smart preset that allows you to use the latest JavaScript without needing to micromanage which syntax transforms are needed by your target environment(s). <br />
@@ -40,14 +40,14 @@ ESLint in JavaScript helps you to set up rules and to enforce code style across 
 
 ### <font color=green>Prettier</font>
 
-Prettier is used to autoformat my code to enforce an opinionated code format.
+Prettier is used to autoformat your code to enforce an opinionated code format.
 
 ---
 
 ### <font color=green>Webpack</font>
 
 Webpack is a tool wherein you use a configuration to explain to the builder how to load specific things . You describe to Webpack how to load \*. js files, or how it should look at.
-For our project, there are three different config files:
+In this boilerplate, there are three different config files:
 
 > `webpack.dev.js`: dev-specific settings would go here <br /> `webpack.prod.js`: prod-specific settings would go here <br /> `webpack.common.js`: common settings between dev and prod environments would go here
 
